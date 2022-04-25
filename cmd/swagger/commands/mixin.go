@@ -111,7 +111,7 @@ func (c *MixinSpec) MixinFiles(primaryFile string, mixinFiles []string, w io.Wri
 	}
 
 	collisions := analysis.Mixin(primary, mixins...)
-	analysis.FixEmptyResponseDescriptions(primary)
+	// analysis.FixEmptyResponseDescriptions(primary)
 
 	return collisions, writeToFile(primary, !c.Compact, c.Format, string(c.Output))
 }
