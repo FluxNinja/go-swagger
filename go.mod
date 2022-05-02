@@ -49,6 +49,8 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
+replace github.com/go-openapi/analysis => github.com/fluxninja/analysis v0.21.2-fn.patch.1
+
 require (
 	github.com/PuerkitoBio/purell v1.1.1 // indirect
 	github.com/PuerkitoBio/urlesc v0.0.0-20170810143723-de5bf2ad4578 // indirect
