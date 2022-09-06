@@ -92,3 +92,4 @@ var (
 	rxDeprecated      = regexp.MustCompile(`[Dd]eprecated\p{Zs}*:\p{Zs}*(true|false)$`)
 	// currently unused: rxExample         = regexp.MustCompile(`[Ex]ample\p{Zs}*:\p{Zs}*(.*)$`)
 	kubebuilderAnnotation = regexp.MustCompile(`\+kubebuilder:.*$`)
+)
