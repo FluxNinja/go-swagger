@@ -624,6 +624,8 @@ COMMENTS:
 					st.seenTag = true
 				}
 				continue
+			} else if kubebuilderAnnotation.MatchString(line) {
+				continue
 			}
 
 			var matched bool
