@@ -92,6 +92,7 @@ func (sv schemaValidations) SetMaximum(val float64, exclusive bool) {
 	sv.current.Maximum = &val
 	sv.current.ExclusiveMaximum = exclusive
 }
+
 func (sv schemaValidations) SetMinimum(val float64, exclusive bool) {
 	sv.current.Minimum = &val
 	sv.current.ExclusiveMinimum = exclusive
@@ -493,9 +494,7 @@ func (s *schemaBuilder) buildFromInterface(decl *entityDecl, it *types.Interface
 	var flist []*ast.Field
 	if specType, ok := decl.Spec.Type.(*ast.InterfaceType); ok {
 		flist = make([]*ast.Field, it.NumEmbeddeds()+it.NumExplicitMethods())
-		for i := range specType.Methods.List {
-			flist[i] = specType.Methods.List[i]
-		}
+		copy(flist, specType.Methods.List)
 	}
 
 	// First collect the embedded interfaces
@@ -847,17 +846,8 @@ func (s *schemaBuilder) buildFromStruct(decl *entityDecl, st *types.Struct, sche
 			addExtension(&ps.VendorExtensible, "x-go-name", fld.Name())
 		}
 
-		if validate, err := parseTag(afld, "validate"); err == nil {
-			if validate != "" {
-				addExtension(&ps.VendorExtensible, "x-go-validate", validate)
-			}
-		}
-
-		if dt, err := parseTag(afld, "default"); err == nil {
-			if dt != "" {
-				addExtension(&ps.VendorExtensible, "x-go-default", dt)
-			}
-		}
+		// addGoTags
+		addGoTags(&ps.VendorExtensible, afld)
 
 		// we have 2 cases:
 		// 1. field with different name override tag
@@ -1153,25 +1143,26 @@ func parseJSONTag(field *ast.Field) (name string, ignore bool, isString bool, er
 	return name, false, false, nil
 }
 
-func parseTag(field *ast.Field, tag string) (name string, err error) {
-	if len(field.Names) > 0 {
-		name = field.Names[0].Name
-	}
+func addGoTags(ve *spec.VendorExtensible, field *ast.Field) {
 	if field.Tag == nil || len(strings.TrimSpace(field.Tag.Value)) == 0 {
-		return "", nil
+		return
 	}
-
 	tv, err := strconv.Unquote(field.Tag.Value)
 	if err != nil {
-		return "", err
+		return
 	}
-
 	if strings.TrimSpace(tv) != "" {
-		st := reflect.StructTag(tv)
-		tg := st.Get(tag)
-		return tg, nil
+		// split tv into a map of key/value pairs
+		for _, tag := range strings.Split(tv, " ") {
+			// split into key/value pair
+			kv := strings.Split(tag, ":")
+			if len(kv) == 2 {
+				// remove the quotes from the value
+				kv[1] = strings.Trim(kv[1], "\"")
+				addExtension(ve, "x-go-tag-"+kv[0], kv[1])
+			}
+		}
 	}
-	return "", nil
 }
 
 // isFieldStringable check if the field type is a scalar. If the field type is
