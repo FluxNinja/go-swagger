@@ -120,7 +120,6 @@ type definitionGenerator struct {
 }
 
 func (m *definitionGenerator) Generate() error {
-
 	mod, err := makeGenDefinition(m.Name, m.Target, m.Model, m.SpecDoc, m.opts)
 	if err != nil {
 		return fmt.Errorf("could not generate definitions for model %s on target %s: %v", m.Name, m.Target, err)
@@ -841,7 +840,7 @@ func (sg *schemaGenContext) buildProperties() error {
 			}
 
 			// set property name
-			var nm = filepath.Base(emprop.Schema.Ref.GetURL().Fragment)
+			nm := filepath.Base(emprop.Schema.Ref.GetURL().Fragment)
 
 			tr := sg.TypeResolver.NewWithModelName(goName(&emprop.Schema, swag.ToGoName(nm)))
 			ttpe, err := tr.ResolveSchema(sch, false, true)
@@ -1598,9 +1597,8 @@ func (sg *schemaGenContext) buildItems() error {
 }
 
 func (sg *schemaGenContext) buildAdditionalItems() error {
-	wantsAdditionalItems :=
-		sg.Schema.AdditionalItems != nil &&
-			(sg.Schema.AdditionalItems.Allows || sg.Schema.AdditionalItems.Schema != nil)
+	wantsAdditionalItems := sg.Schema.AdditionalItems != nil &&
+		(sg.Schema.AdditionalItems.Allows || sg.Schema.AdditionalItems.Schema != nil)
 
 	sg.GenSchema.HasAdditionalItems = wantsAdditionalItems
 	if wantsAdditionalItems {
