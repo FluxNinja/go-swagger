@@ -973,14 +973,15 @@ func (s *schemaBuilder) createParser(nm string, schema, ps *spec.Schema, fld *as
 		return nil
 	}
 
-	if ps.Ref.String() == "" {
-		sp.setDescription = func(lines []string) {
-			ps.Description = joinDropLast(lines)
-			enumDesc := getEnumDesc(ps.VendorExtensible.Extensions)
-			if enumDesc != "" {
-				ps.Description += "\n" + enumDesc
-			}
+	sp.setDescription = func(lines []string) {
+		ps.Description = joinDropLast(lines)
+		enumDesc := getEnumDesc(ps.VendorExtensible.Extensions)
+		if enumDesc != "" {
+			ps.Description += "\n" + enumDesc
 		}
+	}
+
+	if ps.Ref.String() == "" {
 		sp.taggers = []tagParser{
 			newSingleLineTagParser("maximum", &setMaximum{schemaValidations{ps}, rxf(rxMaximumFmt, "")}),
 			newSingleLineTagParser("minimum", &setMinimum{schemaValidations{ps}, rxf(rxMinimumFmt, "")}),
