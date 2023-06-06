@@ -48,7 +48,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-replace github.com/go-openapi/analysis => github.com/fluxninja/analysis v0.21.2-fn.patch.3
+replace github.com/go-openapi/analysis => github.com/fluxninja/analysis v0.21.2-fn.patch.4
 
 require (
 	github.com/docker/go-units v0.4.0 // indirect
