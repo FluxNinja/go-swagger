@@ -220,7 +220,7 @@ func WithAutoXOrder(specPath string) string {
 	}
 
 	tmpFile := filepath.Join(tmpDir, filepath.Base(specPath))
-	if err := ioutil.WriteFile(tmpFile, out, 0600); err != nil {
+	if err := ioutil.WriteFile(tmpFile, out, 0o600); err != nil {
 		panic(err)
 	}
 	return tmpFile

@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"io/ioutil"
+	"os"
 
 	"github.com/go-openapi/loads"
 	"github.com/go-openapi/spec"
@@ -45,6 +45,7 @@ func (c *ExpandSpec) Execute(args []string) error {
 func writeToFile(swspec *spec.Swagger, pretty bool, format string, output string) error {
 	var b []byte
 	var err error
+
 	asJSON := format == "json"
 
 	switch {
@@ -73,5 +74,5 @@ func writeToFile(swspec *spec.Swagger, pretty bool, format string, output string
 		return nil
 	}
 
-	return ioutil.WriteFile(output, b, 0644) // #nosec
+	return os.WriteFile(output, b, 0o600)
 }

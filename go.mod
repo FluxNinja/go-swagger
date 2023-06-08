@@ -1,6 +1,6 @@
 module github.com/go-swagger/go-swagger
 
-go 1.17
+go 1.20
 
 require (
 	github.com/asaskevich/govalidator v0.0.0-20210307081110-f21760c49a8d // indirect
@@ -48,7 +48,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0
 )
 
-replace github.com/go-openapi/analysis => github.com/fluxninja/analysis v0.21.2-fn.patch.5
+replace github.com/go-openapi/analysis => github.com/fluxninja/analysis v0.21.2-fn.patch.7
 
 require (
 	github.com/docker/go-units v0.4.0 // indirect
